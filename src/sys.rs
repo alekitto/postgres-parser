@@ -84,7 +84,34 @@ pub const ALLOCSET_DEFAULT_MINSIZE: u32 = 0;
 pub const ALLOCSET_DEFAULT_INITSIZE: u32 = 8192;
 pub const ALLOCSET_DEFAULT_MAXSIZE: u32 = 8388608;
 pub type Oid = ::std::os::raw::c_uint;
-pub type __darwin_size_t = ::std::os::raw::c_ulong;
+#[repr(C)]
+#[derive(Debug, Default, Hash, PartialEq, Eq)]
+pub struct __sigset_t {
+    pub __val: [::std::os::raw::c_ulong; 16usize],
+}
+#[test]
+fn bindgen_test_layout___sigset_t() {
+    assert_eq!(
+        ::std::mem::size_of::<__sigset_t>(),
+        128usize,
+        concat!("Size of: ", stringify!(__sigset_t))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__sigset_t>(),
+        8usize,
+        concat!("Alignment of ", stringify!(__sigset_t))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__sigset_t>())).__val as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__sigset_t),
+            "::",
+            stringify!(__val)
+        )
+    );
+}
 pub type int16 = ::std::os::raw::c_short;
 pub type int32 = ::std::os::raw::c_int;
 pub type uint32 = ::std::os::raw::c_uint;
@@ -93,7 +120,58 @@ pub type uint64 = ::std::os::raw::c_ulong;
 pub type Size = usize;
 pub type Index = ::std::os::raw::c_uint;
 pub type SubTransactionId = uint32;
-pub type sigjmp_buf = [::std::os::raw::c_int; 38usize];
+pub type __jmp_buf = [::std::os::raw::c_long; 8usize];
+#[repr(C)]
+#[derive(Debug, Default, Hash, PartialEq, Eq)]
+pub struct __jmp_buf_tag {
+    pub __jmpbuf: __jmp_buf,
+    pub __mask_was_saved: ::std::os::raw::c_int,
+    pub __saved_mask: __sigset_t,
+}
+#[test]
+fn bindgen_test_layout___jmp_buf_tag() {
+    assert_eq!(
+        ::std::mem::size_of::<__jmp_buf_tag>(),
+        200usize,
+        concat!("Size of: ", stringify!(__jmp_buf_tag))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__jmp_buf_tag>(),
+        8usize,
+        concat!("Alignment of ", stringify!(__jmp_buf_tag))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__jmp_buf_tag>())).__jmpbuf as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__jmp_buf_tag),
+            "::",
+            stringify!(__jmpbuf)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__jmp_buf_tag>())).__mask_was_saved as *const _ as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__jmp_buf_tag),
+            "::",
+            stringify!(__mask_was_saved)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__jmp_buf_tag>())).__saved_mask as *const _ as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__jmp_buf_tag),
+            "::",
+            stringify!(__saved_mask)
+        )
+    );
+}
+pub type sigjmp_buf = [__jmp_buf_tag; 1usize];
 #[repr(C)]
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct ErrorContextCallback {
@@ -1502,26 +1580,6 @@ fn bindgen_test_layout_Bitmapset() {
         8usize,
         concat!("Alignment of ", stringify!(Bitmapset))
     );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<Bitmapset>())).nwords as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(Bitmapset),
-            "::",
-            stringify!(nwords)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<Bitmapset>())).words as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(Bitmapset),
-            "::",
-            stringify!(words)
-        )
-    );
 }
 #[derive(Serialize, Deserialize)]
 #[repr(u32)]
@@ -1616,56 +1674,6 @@ fn bindgen_test_layout_List() {
         ::std::mem::align_of::<List>(),
         8usize,
         concat!("Alignment of ", stringify!(List))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<List>())).type_ as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(List),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<List>())).length as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(List),
-            "::",
-            stringify!(length)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<List>())).max_length as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(List),
-            "::",
-            stringify!(max_length)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<List>())).elements as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(List),
-            "::",
-            stringify!(elements)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<List>())).initial_elements as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(List),
-            "::",
-            stringify!(initial_elements)
-        )
     );
 }
 impl Default for List {

@@ -33,6 +33,16 @@ POSTGRES_LL="${BUILD_DIR}/postgresql-${PGVER}/src/backend/postgres.ll"
 INSTALL_DIR="${BUILD_DIR}/postgresql-${PGVER}/temp-install"
 CFLAGS="-flto -fPIC"
 CC="clang"
+LLVM_LTO="llvm-lto"
+
+if ! which ${LLVM_LTO} ; then
+    if which "llvm-lto-6.0" ; then
+        LLVM_LTO=llvm-lto-6.0
+    else
+        >&2 echo "error: unable to find llvm-lto"
+        exit 1
+    fi
+fi
 
 if [ "x${NUM_CPUS}" == "x" ]; then
     NUM_CPUS="1"
@@ -69,7 +79,7 @@ if [ ! -f "${POSTGRES_LL}" ] ; then
     if [ ! -d build_bin ] ; then
       mkdir build_bin || exit 1
     fi
-    if [ ! -l build_bin/ld ] ; then
+    if [ ! -h build_bin/ld ] ; then
       ln -s /usr/bin/ld.gold build_bin/ld || exit 1
     fi
     CFLAGS="${CFLAGS} -B${PWD}/build_bin"
@@ -102,7 +112,7 @@ opt -O3 "${POSTGRES_LL}" -o "${POSTGRES_BC}" || exit 1
 
 # perform LTO against $POSTGRES_BC, exporting only the symbols we
 # need in order to use Postgres' parser
-llvm-lto "${POSTGRES_BC}" \
+${LLVM_LTO} "${POSTGRES_BC}" \
   --exported-symbol=_raw_parser --exported-symbol=raw_parser \
   --exported-symbol=_quote_identifier --exported-symbol=quote_identifier \
   --exported-symbol=_pfree --exported-symbol=pfree \
